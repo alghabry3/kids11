@@ -424,11 +424,22 @@ export function EventsPage() {
             </div>
             <div>
               <span className="tag bg-muted">{e.type}</span>
-              <h2 className="mt-3 text-xl font-extrabold">{e.title}</h2>
+              <h2 className="mt-3 text-xl font-extrabold">
+                <Link to="/events/$eventId" params={{ eventId: e.id }} className="transition hover:text-primary">
+                  {e.title}
+                </Link>
+              </h2>
               <p className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
                 <Clock3 size={16} />
                 {lang === "ar" ? "5:00 – 7:00 مساءً · مقر الأكاديمية" : "5:00 – 7:00 PM · Academy venue"}
               </p>
+              <Link
+                to="/events/$eventId"
+                params={{ eventId: e.id }}
+                className="mt-2 inline-block text-sm font-extrabold text-primary hover:underline"
+              >
+                {lang === "ar" ? "التفاصيل والمقاعد والتذاكر" : "Details, seats & tickets"}
+              </Link>
             </div>
             <Button asChild>
               <Link to="/join">
