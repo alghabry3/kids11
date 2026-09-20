@@ -23,6 +23,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/site-shell";
 import { programs, t } from "@/data/site";
+import { OdooModulesSection } from "@/components/detail-pages";
 import hero from "@/assets/academy-hero.jpg";
 import bird from "@/assets/kristina-bird.png.asset.json";
 
@@ -519,6 +520,7 @@ export function AboutPage() {
             : "In Odoo, paid courses map to eCommerce, content to eLearning, and workshops to Events. Student records, grades, attendance, and parent communication require a tailored extension; employee records and attendance use the standard HR apps."}
         </p>
       </section>
+      <OdooModulesSection />
     </PageIntro>
   );
 }
