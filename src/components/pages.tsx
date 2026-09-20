@@ -429,10 +429,10 @@ export function AboutPage() {
     [Users, "شراكة مع ولي الأمر", "Parent partnership"],
   ];
   const modules: Feature[] = [
-    [BookOpen, "eLearning", "eLearning"],
-    [CalendarDays, "Events", "Events"],
-    [Users, "Contacts & CRM", "Contacts & CRM"],
-    [Award, "Surveys & Certificates", "Surveys & Certificates"],
+    [BookOpen, "التعلم الإلكتروني", "eLearning"],
+    [CalendarDays, "الفعاليات", "Events"],
+    [Users, "جهات الاتصال وإدارة العلاقات", "Contacts & CRM"],
+    [Award, "الاستبيانات والشهادات", "Surveys & Certificates"],
   ];
   return (
     <PageIntro
