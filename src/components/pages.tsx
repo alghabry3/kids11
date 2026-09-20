@@ -117,6 +117,7 @@ export function Hero() {
 
 export function HomePage() {
   const { lang } = useLanguage();
+  const { programs } = usePrograms();
   return (
     <>
       <Hero />
