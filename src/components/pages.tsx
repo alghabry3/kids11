@@ -391,12 +391,14 @@ export function EventsPage() {
       type: lang === "ar" ? "فعالية مجتمعية" : "Community event",
     },
     {
+      id: "talents-lab",
       day: "08",
       month: lang === "ar" ? "أكتوبر" : "OCT",
       title: lang === "ar" ? "مختبر المواهب الصغير" : "Little Talents Lab",
       type: lang === "ar" ? "ورشة أطفال" : "Kids workshop",
     },
     {
+      id: "language-day",
       day: "22",
       month: lang === "ar" ? "أكتوبر" : "OCT",
       title: lang === "ar" ? "يوم اللغة المرح" : "Fun Language Day",
