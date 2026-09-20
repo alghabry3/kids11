@@ -22,7 +22,8 @@ import {
 import { useMemo, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/site-shell";
-import { programs, t } from "@/data/site";
+import { t } from "@/data/site";
+import { usePrograms } from "@/lib/programs-store";
 import { OdooModulesSection } from "@/components/detail-pages";
 import hero from "@/assets/academy-hero.jpg";
 import bird from "@/assets/kristina-bird.png.asset.json";
@@ -209,6 +210,7 @@ export function HomePage() {
 
 export function ProgramsPage() {
   const { lang } = useLanguage();
+  const { programs } = usePrograms();
   const [filter, setFilter] = useState<string>("all");
   const filters: FilterItem[] = [
     ["all", "الكل", "All"],
@@ -220,7 +222,7 @@ export function ProgramsPage() {
       programs.filter((p) =>
         filter === "all" ? true : filter === "young" ? p.id.startsWith("hosting") : !p.id.startsWith("hosting"),
       ),
-    [filter],
+    [filter, programs],
   );
   return (
     <PageIntro

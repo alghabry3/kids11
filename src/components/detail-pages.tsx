@@ -22,7 +22,8 @@ import {
 import { useMemo, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/site-shell";
-import { programs, t, type Bilingual } from "@/data/site";
+import { t, type Bilingual } from "@/data/site";
+import { usePrograms } from "@/lib/programs-store";
 import { academyEvents, demoCourse, odooModules, programDetails, slideKindLabel } from "@/data/odoo";
 
 export function PageIntro({
@@ -75,6 +76,7 @@ const slideIcons: Record<string, LucideIcon> = { video: CirclePlay, content: Fil
 
 export function ProgramDetailPage({ programId }: { programId: string }) {
   const { lang } = useLanguage();
+  const { programs } = usePrograms();
   const detail = programDetails[programId];
   const program = programs.find((p) => p.id === programId);
   const [planIndex, setPlanIndex] = useState(0);

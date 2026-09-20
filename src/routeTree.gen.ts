@@ -16,6 +16,7 @@ import { Route as EventsRouteImport } from './routes/events'
 import { Route as JoinRouteImport } from './routes/join'
 import { Route as LearningRouteImport } from './routes/learning'
 import { Route as ProgramsRouteImport } from './routes/programs'
+import { Route as AdminProgramsRouteImport } from './routes/admin.programs'
 import { Route as EventsEventIdRouteImport } from './routes/events.$eventId'
 import { Route as LearningEnglishKidsRouteImport } from './routes/learning.english-kids'
 import { Route as ProgramsProgramIdRouteImport } from './routes/programs.$programId'
@@ -55,6 +56,11 @@ const ProgramsRoute = ProgramsRouteImport.update({
   path: '/programs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminProgramsRoute = AdminProgramsRouteImport.update({
+  id: '/admin/programs',
+  path: '/admin/programs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventsEventIdRoute = EventsEventIdRouteImport.update({
   id: '/$eventId',
   path: '/$eventId',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/join': typeof JoinRoute
   '/learning': typeof LearningRouteWithChildren
   '/programs': typeof ProgramsRouteWithChildren
+  '/admin/programs': typeof AdminProgramsRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/learning/english-kids': typeof LearningEnglishKidsRoute
   '/programs/$programId': typeof ProgramsProgramIdRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/join': typeof JoinRoute
   '/learning': typeof LearningRouteWithChildren
   '/programs': typeof ProgramsRouteWithChildren
+  '/admin/programs': typeof AdminProgramsRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/learning/english-kids': typeof LearningEnglishKidsRoute
   '/programs/$programId': typeof ProgramsProgramIdRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/join': typeof JoinRoute
   '/learning': typeof LearningRouteWithChildren
   '/programs': typeof ProgramsRouteWithChildren
+  '/admin/programs': typeof AdminProgramsRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/learning/english-kids': typeof LearningEnglishKidsRoute
   '/programs/$programId': typeof ProgramsProgramIdRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/join'
     | '/learning'
     | '/programs'
+    | '/admin/programs'
     | '/events/$eventId'
     | '/learning/english-kids'
     | '/programs/$programId'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/join'
     | '/learning'
     | '/programs'
+    | '/admin/programs'
     | '/events/$eventId'
     | '/learning/english-kids'
     | '/programs/$programId'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/join'
     | '/learning'
     | '/programs'
+    | '/admin/programs'
     | '/events/$eventId'
     | '/learning/english-kids'
     | '/programs/$programId'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   JoinRoute: typeof JoinRoute
   LearningRoute: typeof LearningRouteWithChildren
   ProgramsRoute: typeof ProgramsRouteWithChildren
+  AdminProgramsRoute: typeof AdminProgramsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -206,6 +219,13 @@ declare module '@tanstack/react-router' {
       path: '/programs'
       fullPath: '/programs'
       preLoaderRoute: typeof ProgramsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/programs': {
+      id: '/admin/programs'
+      path: '/admin/programs'
+      fullPath: '/admin/programs'
+      preLoaderRoute: typeof AdminProgramsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/events/$eventId': {
@@ -275,6 +295,7 @@ const rootRouteChildren: RootRouteChildren = {
   JoinRoute: JoinRoute,
   LearningRoute: LearningRouteWithChildren,
   ProgramsRoute: ProgramsRouteWithChildren,
+  AdminProgramsRoute: AdminProgramsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

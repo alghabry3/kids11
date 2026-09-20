@@ -2,7 +2,8 @@ import { CheckCircle2, Loader2, MessageCircle, Sparkles, Wand2 } from "lucide-re
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/site-shell";
-import { programs, t } from "@/data/site";
+import { t } from "@/data/site";
+import { usePrograms } from "@/lib/programs-store";
 import { recommendProgram, type Recommendation } from "@/lib/recommend.functions";
 
 const TIME_SLOTS = [
@@ -25,6 +26,7 @@ const field =
 
 export function ProgramAdvisor({ onPick }: { onPick: (programId: string) => void }) {
   const { lang } = useLanguage();
+  const { programs } = usePrograms();
   const [age, setAge] = useState("5");
   const [interests, setInterests] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
@@ -181,6 +183,7 @@ export function ProgramAdvisor({ onPick }: { onPick: (programId: string) => void
 
 export function EnrollForm({ programId, setProgramId }: { programId: string; setProgramId: (id: string) => void }) {
   const { lang } = useLanguage();
+  const { programs } = usePrograms();
   const [slot, setSlot] = useState(TIME_SLOTS[0]!.id);
   const [childName, setChildName] = useState("");
   const [childAge, setChildAge] = useState("");
@@ -323,8 +326,9 @@ export function EnrollForm({ programId, setProgramId }: { programId: string; set
 
 export function JoinPage({ initialProgram }: { initialProgram?: string | undefined }) {
   const { lang } = useLanguage();
+  const { programs } = usePrograms();
   const [programId, setProgramId] = useState(
-    initialProgram && programs.some((p) => p.id === initialProgram) ? initialProgram : programs[0]!.id,
+    initialProgram && programs.some((p) => p.id === initialProgram) ? initialProgram : (programs[0]?.id ?? ""),
   );
 
   const pick = (id: string) => {
