@@ -323,6 +323,7 @@ export function LearningPage() {
               >
                 {done[i] ? <CheckCircle2 /> : <Play size={18} />}
               </span>
+
               <span className="flex-1">
                 <b>{lang === "ar" ? l.ar : l.en}</b>
                 <small className="mt-1 block text-muted-foreground">
