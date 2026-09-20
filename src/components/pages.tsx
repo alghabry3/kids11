@@ -251,11 +251,16 @@ export function ProgramsPage() {
                 </div>
               ))}
             </div>
-            <div className="p-6 pt-2">
-              <Button className="w-full" asChild>
+            <div className="grid gap-2 p-6 pt-2 sm:grid-cols-2">
+              <Button asChild>
+                <Link to={`/join?program=${p.id}`}>
+                  {lang === "ar" ? "سجّل الآن" : "Register now"}
+                </Link>
+              </Button>
+              <Button variant="outline" asChild>
                 <a href="https://wa.link/a7wsrs" target="_blank" rel="noreferrer">
                   <MessageCircle size={18} />
-                  {lang === "ar" ? "اسأل عن التسجيل" : "Ask about enrollment"}
+                  {lang === "ar" ? "استفسار سريع" : "Quick question"}
                 </a>
               </Button>
             </div>
@@ -404,10 +409,10 @@ export function EventsPage() {
                 {lang === "ar" ? "5:00 – 7:00 مساءً · مقر الأكاديمية" : "5:00 – 7:00 PM · Academy venue"}
               </p>
             </div>
-            <Button variant="outline" asChild>
-              <a href="https://wa.link/a7wsrs" target="_blank" rel="noreferrer">
+            <Button asChild>
+              <Link to="/join">
                 {lang === "ar" ? "سجل اهتمامك" : "Register interest"}
-              </a>
+              </Link>
             </Button>
           </article>
         ))}
