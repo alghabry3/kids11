@@ -330,6 +330,9 @@ export function LearningPage() {
           <p className="mt-2 text-xs font-bold">
             {done.filter(Boolean).length} / 4 {lang === "ar" ? "دروس مكتملة" : "lessons complete"}
           </p>
+          <Button variant="outline" className="mt-5 w-full" asChild>
+            <Link to="/learning/english-kids">{lang === "ar" ? "افتح تجربة المسار الكاملة" : "Open the full course"}</Link>
+          </Button>
         </aside>
         <div className="card divide-y">
           {lessons.map((l, i) => (
@@ -381,6 +384,7 @@ export function EventsPage() {
   const { lang } = useLanguage();
   const events = [
     {
+      id: "national-day",
       day: "23",
       month: lang === "ar" ? "سبتمبر" : "SEP",
       title: lang === "ar" ? "احتفاء اليوم الوطني" : "Saudi National Day Celebration",
