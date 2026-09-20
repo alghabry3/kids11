@@ -321,7 +321,7 @@ export function EnrollForm({ programId, setProgramId }: { programId: string; set
   );
 }
 
-export function JoinPage({ initialProgram }: { initialProgram?: string }) {
+export function JoinPage({ initialProgram }: { initialProgram?: string | undefined }) {
   const { lang } = useLanguage();
   const [programId, setProgramId] = useState(
     initialProgram && programs.some((p) => p.id === initialProgram) ? initialProgram : programs[0]!.id,
