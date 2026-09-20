@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, X, Globe2, ArrowUpLeft, Instagram } from "lucide-react";
+import { Menu, X, Globe2, ArrowUpLeft, Instagram, Home, BookOpen, ClipboardList, CalendarDays, MessageCircle } from "lucide-react";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import logo from "@/assets/kristina-kidz-logo.png.asset.json";
 import bird from "@/assets/kristina-bird.png.asset.json";

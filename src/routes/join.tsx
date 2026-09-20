@@ -2,9 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { JoinPage } from "@/components/join";
 
 export const Route = createFileRoute("/join")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    program: typeof search["program"] === "string" ? (search["program"] as string) : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>) =>
+    typeof search["program"] === "string" ? { program: search["program"] as string } : {},
   head: () => ({
     meta: [
       { title: "التسجيل ومساعد اختيار البرنامج | أكاديمية كريستينا كيدز" },
