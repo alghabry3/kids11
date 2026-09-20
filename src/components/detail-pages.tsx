@@ -22,7 +22,8 @@ import {
 import { useMemo, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/site-shell";
-import { programs, t, type Bilingual } from "@/data/site";
+import { t, type Bilingual } from "@/data/site";
+import { usePrograms } from "@/lib/programs-store";
 import { academyEvents, demoCourse, odooModules, programDetails, slideKindLabel } from "@/data/odoo";
 
 export function PageIntro({
@@ -69,19 +70,41 @@ function Breadcrumb({ items }: { items: { label: string; to?: string }[] }) {
   );
 }
 
-const slideIcons: Record<string, LucideIcon> = { video: CirclePlay, content: FileText, activity: Puzzle, quiz: HelpCircle };
+const slideIcons: Record<string, LucideIcon | undefined> = { video: CirclePlay, content: FileText, activity: Puzzle, quiz: HelpCircle };
 
 // ================= صفحة تفاصيل البرنامج — نمط صفحة منتج في المتجر =================
 
 export function ProgramDetailPage({ programId }: { programId: string }) {
   const { lang } = useLanguage();
-  const detail = programDetails[programId];
+  const { programs } = usePrograms();
+  const baseDetail = programDetails[programId];
   const program = programs.find((p) => p.id === programId);
   const [planIndex, setPlanIndex] = useState(0);
   const [tab, setTab] = useState<"about" | "highlights" | "practical">("about");
   const ArrowComp = lang === "ar" ? ArrowLeft : ArrowRight;
 
-  if (!detail || !program) throw notFound();
+  if (!program) throw notFound();
+
+  const detail = baseDetail ?? {
+    tagline: program.title,
+    description: {
+      ar: "برنامج مُضاف من شاشة إدارة البرامج، وتظهر تفاصيله هنا تلقائياً كما يظهر أي منتج جديد في متجر أودو.",
+      en: "A program added from the management screen; its details appear here automatically, like any new Odoo product.",
+    },
+    includes: [
+      { ar: "متابعة دورية لولي الأمر", en: "Regular parent updates" },
+      { ar: "مواد وأنشطة مناسبة للعمر", en: "Age-appropriate materials and activities" },
+    ],
+    highlights: [
+      { ar: "مجموعات صغيرة تتيح متابعة كل طفل", en: "Small groups that allow individual follow-up" },
+      { ar: "جدول مرن يناسب أوقات الأسرة", en: "A flexible schedule that suits family timings" },
+    ],
+    practical: {
+      ar: `الفئة العمرية ${t(program.age, "ar")}، والأوقات ${program.time}. يرجى تأكيد توفر المقاعد قبل التسجيل.`,
+      en: `Age group ${t(program.age, "en")}, timing ${program.time}. Please confirm seat availability before registering.`,
+    },
+    odooModels: ["product.template", "product.product", "sale.order", "website_sale"],
+  };
 
   const plan = program.plans[planIndex] ?? program.plans[0];
   const tabs: [typeof tab, string][] = [
@@ -199,7 +222,7 @@ export function ProgramDetailPage({ programId }: { programId: string }) {
           <div className="mt-5 flex items-end justify-between border-t pt-5">
             <span className="text-sm text-muted-foreground">{lang === "ar" ? "الإجمالي" : "Total"}</span>
             <strong className="text-3xl text-primary">
-              {plan.price.toLocaleString()} <small className="text-base">{lang === "ar" ? "ر.س" : "SAR"}</small>
+              {(plan?.price ?? 0).toLocaleString()} <small className="text-base">{lang === "ar" ? "ر.س" : "SAR"}</small>
             </strong>
           </div>
           <Button size="lg" className="mt-5 w-full" asChild>
@@ -515,7 +538,7 @@ export function EventDetailPage({ eventId }: { eventId: string }) {
             ) : (
               <Button size="lg" className="mt-5 w-full" onClick={() => setSent(true)}>
                 <Ticket size={18} />
-                {lang === "ar" ? `سجّل · ${t(chosen.name, lang)}` : `Register · ${t(chosen.name, lang)}`}
+                {lang === "ar" ? `سجّل · ${chosen ? t(chosen.name, lang) : ""}` : `Register · ${chosen ? t(chosen.name, lang) : ""}`}
               </Button>
             )}
             <Button variant="outline" className="mt-2 w-full" asChild>
@@ -540,7 +563,7 @@ export function EventDetailPage({ eventId }: { eventId: string }) {
 
 export function OdooModulesSection() {
   const { lang } = useLanguage();
-  const [activeId, setActiveId] = useState(odooModules[0].id);
+  const [activeId, setActiveId] = useState(odooModules[0]!.id);
   const active = odooModules.find((m) => m.id === activeId)!;
   const icons: Record<string, LucideIcon> = {
     website: BookOpen,
@@ -605,6 +628,14 @@ export function OdooModulesSection() {
             ))}
           </ul>
           <p className="mt-5 border-t pt-5 text-sm leading-8 text-muted-foreground">{t(active.shownAs, lang)}</p>
+          {active.id === "program-admin" && (
+            <Link
+              to="/admin/programs"
+              className="mt-5 inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-extrabold text-primary-foreground"
+            >
+              {lang === "ar" ? "افتح شاشة إدارة البرامج" : "Open the program management screen"}
+            </Link>
+          )}
         </div>
       </div>
     </section>

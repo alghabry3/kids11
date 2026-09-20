@@ -522,4 +522,18 @@ export const odooModules: OdooModuleMap[] = [
     },
     custom: true,
   },
+  {
+    id: "program-admin",
+    name: { ar: "إدارة البرامج والأسعار", en: "Programs & pricing management" },
+    appName: "Sales / eCommerce",
+    models: [
+      { model: "product.template", label: { ar: "البرنامج كمنتج", en: "The program as a product" } },
+      { model: "product.product", label: { ar: "الباقة كمتغيّر بسعره", en: "Each plan as a priced variant" } },
+      { model: "product.pricelist", label: { ar: "قوائم الأسعار والعروض", en: "Pricelists and offers" } },
+    ],
+    shownAs: {
+      ar: "شاشة داخل الموقع لإضافة البرامج وتعديل باقاتها وأسعارها وحذفها، بنفس منطق بطاقة المنتج في أودو، وتنعكس التغييرات مباشرة على صفحات البرامج والتسجيل.",
+      en: "An in-site screen to add, edit, and delete programs with their plans and prices — mirroring Odoo's product form, with changes reflected instantly across the programs and registration pages.",
+    },
+  },
 ];
