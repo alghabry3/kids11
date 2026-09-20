@@ -16,6 +16,9 @@ import { Route as EventsRouteImport } from './routes/events'
 import { Route as JoinRouteImport } from './routes/join'
 import { Route as LearningRouteImport } from './routes/learning'
 import { Route as ProgramsRouteImport } from './routes/programs'
+import { Route as EventsEventIdRouteImport } from './routes/events.$eventId'
+import { Route as LearningEnglishKidsRouteImport } from './routes/learning.english-kids'
+import { Route as ProgramsProgramIdRouteImport } from './routes/programs.$programId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,34 +55,58 @@ const ProgramsRoute = ProgramsRouteImport.update({
   path: '/programs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EventsEventIdRoute = EventsEventIdRouteImport.update({
+  id: '/$eventId',
+  path: '/$eventId',
+  getParentRoute: () => EventsRoute,
+} as any)
+const LearningEnglishKidsRoute = LearningEnglishKidsRouteImport.update({
+  id: '/english-kids',
+  path: '/english-kids',
+  getParentRoute: () => LearningRoute,
+} as any)
+const ProgramsProgramIdRoute = ProgramsProgramIdRouteImport.update({
+  id: '/$programId',
+  path: '/$programId',
+  getParentRoute: () => ProgramsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/events': typeof EventsRoute
+  '/events': typeof EventsRouteWithChildren
   '/join': typeof JoinRoute
-  '/learning': typeof LearningRoute
-  '/programs': typeof ProgramsRoute
+  '/learning': typeof LearningRouteWithChildren
+  '/programs': typeof ProgramsRouteWithChildren
+  '/events/$eventId': typeof EventsEventIdRoute
+  '/learning/english-kids': typeof LearningEnglishKidsRoute
+  '/programs/$programId': typeof ProgramsProgramIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/events': typeof EventsRoute
+  '/events': typeof EventsRouteWithChildren
   '/join': typeof JoinRoute
-  '/learning': typeof LearningRoute
-  '/programs': typeof ProgramsRoute
+  '/learning': typeof LearningRouteWithChildren
+  '/programs': typeof ProgramsRouteWithChildren
+  '/events/$eventId': typeof EventsEventIdRoute
+  '/learning/english-kids': typeof LearningEnglishKidsRoute
+  '/programs/$programId': typeof ProgramsProgramIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/events': typeof EventsRoute
+  '/events': typeof EventsRouteWithChildren
   '/join': typeof JoinRoute
-  '/learning': typeof LearningRoute
-  '/programs': typeof ProgramsRoute
+  '/learning': typeof LearningRouteWithChildren
+  '/programs': typeof ProgramsRouteWithChildren
+  '/events/$eventId': typeof EventsEventIdRoute
+  '/learning/english-kids': typeof LearningEnglishKidsRoute
+  '/programs/$programId': typeof ProgramsProgramIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +118,9 @@ export interface FileRouteTypes {
     | '/join'
     | '/learning'
     | '/programs'
+    | '/events/$eventId'
+    | '/learning/english-kids'
+    | '/programs/$programId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +130,9 @@ export interface FileRouteTypes {
     | '/join'
     | '/learning'
     | '/programs'
+    | '/events/$eventId'
+    | '/learning/english-kids'
+    | '/programs/$programId'
   id:
     | '__root__'
     | '/'
@@ -109,16 +142,19 @@ export interface FileRouteTypes {
     | '/join'
     | '/learning'
     | '/programs'
+    | '/events/$eventId'
+    | '/learning/english-kids'
+    | '/programs/$programId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
-  EventsRoute: typeof EventsRoute
+  EventsRoute: typeof EventsRouteWithChildren
   JoinRoute: typeof JoinRoute
-  LearningRoute: typeof LearningRoute
-  ProgramsRoute: typeof ProgramsRoute
+  LearningRoute: typeof LearningRouteWithChildren
+  ProgramsRoute: typeof ProgramsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -172,17 +208,73 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgramsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/events/$eventId': {
+      id: '/events/$eventId'
+      path: '/$eventId'
+      fullPath: '/events/$eventId'
+      preLoaderRoute: typeof EventsEventIdRouteImport
+      parentRoute: typeof EventsRoute
+    }
+    '/learning/english-kids': {
+      id: '/learning/english-kids'
+      path: '/english-kids'
+      fullPath: '/learning/english-kids'
+      preLoaderRoute: typeof LearningEnglishKidsRouteImport
+      parentRoute: typeof LearningRoute
+    }
+    '/programs/$programId': {
+      id: '/programs/$programId'
+      path: '/$programId'
+      fullPath: '/programs/$programId'
+      preLoaderRoute: typeof ProgramsProgramIdRouteImport
+      parentRoute: typeof ProgramsRoute
+    }
   }
 }
+
+interface EventsRouteChildren {
+  EventsEventIdRoute: typeof EventsEventIdRoute
+}
+
+const EventsRouteChildren: EventsRouteChildren = {
+  EventsEventIdRoute: EventsEventIdRoute,
+}
+
+const EventsRouteWithChildren =
+  EventsRoute._addFileChildren(EventsRouteChildren)
+
+interface LearningRouteChildren {
+  LearningEnglishKidsRoute: typeof LearningEnglishKidsRoute
+}
+
+const LearningRouteChildren: LearningRouteChildren = {
+  LearningEnglishKidsRoute: LearningEnglishKidsRoute,
+}
+
+const LearningRouteWithChildren = LearningRoute._addFileChildren(
+  LearningRouteChildren,
+)
+
+interface ProgramsRouteChildren {
+  ProgramsProgramIdRoute: typeof ProgramsProgramIdRoute
+}
+
+const ProgramsRouteChildren: ProgramsRouteChildren = {
+  ProgramsProgramIdRoute: ProgramsProgramIdRoute,
+}
+
+const ProgramsRouteWithChildren = ProgramsRoute._addFileChildren(
+  ProgramsRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
-  EventsRoute: EventsRoute,
+  EventsRoute: EventsRouteWithChildren,
   JoinRoute: JoinRoute,
-  LearningRoute: LearningRoute,
-  ProgramsRoute: ProgramsRoute,
+  LearningRoute: LearningRouteWithChildren,
+  ProgramsRoute: ProgramsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

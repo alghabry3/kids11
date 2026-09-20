@@ -138,7 +138,11 @@ export function HomePage() {
             >
               <div className="p-6">
                 <span className="tag bg-muted">{t(p.age, lang)}</span>
-                <h3 className="mt-5 text-xl font-extrabold">{t(p.title, lang)}</h3>
+                <h3 className="mt-5 text-xl font-extrabold">
+                  <Link to="/programs/$programId" params={{ programId: p.id }} className="transition hover:text-primary">
+                    {t(p.title, lang)}
+                  </Link>
+                </h3>
                 <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
                   <Clock3 size={16} />
                   {p.time}
@@ -149,6 +153,13 @@ export function HomePage() {
                     {p.plans[0]?.price ?? 0} <small>{lang === "ar" ? "ر.س" : "SAR"}</small>
                   </strong>
                 </div>
+                <Link
+                  to="/programs/$programId"
+                  params={{ programId: p.id }}
+                  className="mt-4 inline-block text-sm font-extrabold text-primary hover:underline"
+                >
+                  {lang === "ar" ? "تفاصيل البرنامج والباقات" : "Program details & plans"}
+                </Link>
               </div>
             </article>
           ))}
@@ -232,12 +243,16 @@ export function ProgramsPage() {
           <article className="card overflow-hidden" key={p.id}>
             <div className="border-b bg-muted/50 p-6">
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <h2 className="text-xl font-extrabold">{t(p.title, lang)}</h2>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {t(p.age, lang)} · {p.time}
-                  </p>
-                </div>
+                  <div>
+                    <h2 className="text-xl font-extrabold">
+                      <Link to="/programs/$programId" params={{ programId: p.id }} className="transition hover:text-primary">
+                        {t(p.title, lang)}
+                      </Link>
+                    </h2>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {t(p.age, lang)} · {p.time}
+                    </p>
+                  </div>
                 <BookOpen className="text-primary" />
               </div>
             </div>
