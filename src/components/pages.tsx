@@ -146,7 +146,7 @@ export function HomePage() {
                 <div className="mt-6 flex items-end justify-between">
                   <span className="text-sm text-muted-foreground">{lang === "ar" ? "تبدأ من" : "From"}</span>
                   <strong className="text-2xl text-primary">
-                    {p.plans[0].price} <small>{lang === "ar" ? "ر.س" : "SAR"}</small>
+                    {p.plans[0]?.price ?? 0} <small>{lang === "ar" ? "ر.س" : "SAR"}</small>
                   </strong>
                 </div>
               </div>
