@@ -70,7 +70,7 @@ function Breadcrumb({ items }: { items: { label: string; to?: string }[] }) {
   );
 }
 
-const slideIcons: Record<string, LucideIcon> = { video: CirclePlay, content: FileText, activity: Puzzle, quiz: HelpCircle };
+const slideIcons: Record<string, LucideIcon | undefined> = { video: CirclePlay, content: FileText, activity: Puzzle, quiz: HelpCircle };
 
 // ================= صفحة تفاصيل البرنامج — نمط صفحة منتج في المتجر =================
 
@@ -222,7 +222,7 @@ export function ProgramDetailPage({ programId }: { programId: string }) {
           <div className="mt-5 flex items-end justify-between border-t pt-5">
             <span className="text-sm text-muted-foreground">{lang === "ar" ? "الإجمالي" : "Total"}</span>
             <strong className="text-3xl text-primary">
-              {plan.price.toLocaleString()} <small className="text-base">{lang === "ar" ? "ر.س" : "SAR"}</small>
+              {(plan?.price ?? 0).toLocaleString()} <small className="text-base">{lang === "ar" ? "ر.س" : "SAR"}</small>
             </strong>
           </div>
           <Button size="lg" className="mt-5 w-full" asChild>
@@ -538,7 +538,7 @@ export function EventDetailPage({ eventId }: { eventId: string }) {
             ) : (
               <Button size="lg" className="mt-5 w-full" onClick={() => setSent(true)}>
                 <Ticket size={18} />
-                {lang === "ar" ? `سجّل · ${t(chosen.name, lang)}` : `Register · ${t(chosen.name, lang)}`}
+                {lang === "ar" ? `سجّل · ${chosen ? t(chosen.name, lang) : ""}` : `Register · ${chosen ? t(chosen.name, lang) : ""}`}
               </Button>
             )}
             <Button variant="outline" className="mt-2 w-full" asChild>
@@ -563,7 +563,7 @@ export function EventDetailPage({ eventId }: { eventId: string }) {
 
 export function OdooModulesSection() {
   const { lang } = useLanguage();
-  const [activeId, setActiveId] = useState(odooModules[0].id);
+  const [activeId, setActiveId] = useState(odooModules[0]!.id);
   const active = odooModules.find((m) => m.id === activeId)!;
   const icons: Record<string, LucideIcon> = {
     website: BookOpen,
