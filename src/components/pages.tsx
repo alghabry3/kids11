@@ -23,6 +23,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/site-shell";
 import { programs, t } from "@/data/site";
+import { OdooModulesSection } from "@/components/detail-pages";
 import hero from "@/assets/academy-hero.jpg";
 import bird from "@/assets/kristina-bird.png.asset.json";
 
@@ -138,7 +139,11 @@ export function HomePage() {
             >
               <div className="p-6">
                 <span className="tag bg-muted">{t(p.age, lang)}</span>
-                <h3 className="mt-5 text-xl font-extrabold">{t(p.title, lang)}</h3>
+                <h3 className="mt-5 text-xl font-extrabold">
+                  <Link to="/programs/$programId" params={{ programId: p.id }} className="transition hover:text-primary">
+                    {t(p.title, lang)}
+                  </Link>
+                </h3>
                 <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
                   <Clock3 size={16} />
                   {p.time}
@@ -149,6 +154,13 @@ export function HomePage() {
                     {p.plans[0]?.price ?? 0} <small>{lang === "ar" ? "ر.س" : "SAR"}</small>
                   </strong>
                 </div>
+                <Link
+                  to="/programs/$programId"
+                  params={{ programId: p.id }}
+                  className="mt-4 inline-block text-sm font-extrabold text-primary hover:underline"
+                >
+                  {lang === "ar" ? "تفاصيل البرنامج والباقات" : "Program details & plans"}
+                </Link>
               </div>
             </article>
           ))}
@@ -232,12 +244,16 @@ export function ProgramsPage() {
           <article className="card overflow-hidden" key={p.id}>
             <div className="border-b bg-muted/50 p-6">
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <h2 className="text-xl font-extrabold">{t(p.title, lang)}</h2>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {t(p.age, lang)} · {p.time}
-                  </p>
-                </div>
+                  <div>
+                    <h2 className="text-xl font-extrabold">
+                      <Link to="/programs/$programId" params={{ programId: p.id }} className="transition hover:text-primary">
+                        {t(p.title, lang)}
+                      </Link>
+                    </h2>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {t(p.age, lang)} · {p.time}
+                    </p>
+                  </div>
                 <BookOpen className="text-primary" />
               </div>
             </div>
@@ -315,6 +331,9 @@ export function LearningPage() {
           <p className="mt-2 text-xs font-bold">
             {done.filter(Boolean).length} / 4 {lang === "ar" ? "دروس مكتملة" : "lessons complete"}
           </p>
+          <Button variant="outline" className="mt-5 w-full" asChild>
+            <Link to="/learning/english-kids">{lang === "ar" ? "افتح تجربة المسار الكاملة" : "Open the full course"}</Link>
+          </Button>
         </aside>
         <div className="card divide-y">
           {lessons.map((l, i) => (
@@ -366,18 +385,21 @@ export function EventsPage() {
   const { lang } = useLanguage();
   const events = [
     {
+      id: "national-day",
       day: "23",
       month: lang === "ar" ? "سبتمبر" : "SEP",
       title: lang === "ar" ? "احتفاء اليوم الوطني" : "Saudi National Day Celebration",
       type: lang === "ar" ? "فعالية مجتمعية" : "Community event",
     },
     {
+      id: "talents-lab",
       day: "08",
       month: lang === "ar" ? "أكتوبر" : "OCT",
       title: lang === "ar" ? "مختبر المواهب الصغير" : "Little Talents Lab",
       type: lang === "ar" ? "ورشة أطفال" : "Kids workshop",
     },
     {
+      id: "language-day",
       day: "22",
       month: lang === "ar" ? "أكتوبر" : "OCT",
       title: lang === "ar" ? "يوم اللغة المرح" : "Fun Language Day",
@@ -403,11 +425,22 @@ export function EventsPage() {
             </div>
             <div>
               <span className="tag bg-muted">{e.type}</span>
-              <h2 className="mt-3 text-xl font-extrabold">{e.title}</h2>
+              <h2 className="mt-3 text-xl font-extrabold">
+                <Link to="/events/$eventId" params={{ eventId: e.id }} className="transition hover:text-primary">
+                  {e.title}
+                </Link>
+              </h2>
               <p className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
                 <Clock3 size={16} />
                 {lang === "ar" ? "5:00 – 7:00 مساءً · مقر الأكاديمية" : "5:00 – 7:00 PM · Academy venue"}
               </p>
+              <Link
+                to="/events/$eventId"
+                params={{ eventId: e.id }}
+                className="mt-2 inline-block text-sm font-extrabold text-primary hover:underline"
+              >
+                {lang === "ar" ? "التفاصيل والمقاعد والتذاكر" : "Details, seats & tickets"}
+              </Link>
             </div>
             <Button asChild>
               <Link to="/join">
@@ -487,6 +520,7 @@ export function AboutPage() {
             : "In Odoo, paid courses map to eCommerce, content to eLearning, and workshops to Events. Student records, grades, attendance, and parent communication require a tailored extension; employee records and attendance use the standard HR apps."}
         </p>
       </section>
+      <OdooModulesSection />
     </PageIntro>
   );
 }
