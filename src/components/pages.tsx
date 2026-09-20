@@ -253,7 +253,7 @@ export function ProgramsPage() {
             </div>
             <div className="grid gap-2 p-6 pt-2 sm:grid-cols-2">
               <Button asChild>
-                <Link to={`/join?program=${p.id}`}>
+                <Link to="/join" search={{ program: p.id }}>
                   {lang === "ar" ? "سجّل الآن" : "Register now"}
                 </Link>
               </Button>
