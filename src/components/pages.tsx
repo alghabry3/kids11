@@ -26,7 +26,7 @@ import { useLanguage } from "@/components/site-language";
 import { t } from "@/data/site";
 import { usePrograms } from "@/lib/programs-store";
 import { OdooModulesSection } from "@/components/detail-pages";
-import { academyEvents } from "@/data/odoo";
+import { academyEvents, demoCourse, odooModules } from "@/data/odoo";
 import hero from "@/assets/academy-hero.jpg";
 import eventLanguageDay from "@/assets/event-language-day.jpg";
 import eventNationalDay from "@/assets/event-national-day.jpg";
@@ -44,13 +44,13 @@ type FilterItem = [string, string, string];
 export function Hero() {
   const { lang } = useLanguage();
   const features: Feature[] = [
-    [Heart, "الرعاية التي تمنح الأمان", "Care that feels safe"],
-    [Search, "اكتشاف نقاط القوة", "Discovering strengths"],
-    [GraduationCap, "تعلم يبقى أثره", "Learning that lasts"],
+    [BookOpen, "البرامج كبطاقات منتجات", "Programs as product cards"],
+    [CalendarDays, "الفعاليات بتذاكر ومقاعد", "Events with tickets & seats"],
+    [GraduationCap, "دورة تعليمية بتقدم واضح", "Course progress made visible"],
   ];
   return (
     <>
-      <section className="relative min-h-[76vh] overflow-hidden">
+      <section className="relative min-h-[82vh] overflow-hidden">
         <img
           src={hero}
           width={1600}
@@ -58,40 +58,40 @@ export function Hero() {
           alt={lang === "ar" ? "أطفال يتعلمون معاً في الأكاديمية" : "Children learning together at the academy"}
           className="absolute inset-0 h-full w-full object-cover object-left"
         />
-        <div className="absolute inset-0 bg-gradient-to-l from-background via-background/90 to-background/10 rtl:bg-gradient-to-r" />
-        <div className="page-wrap relative flex min-h-[76vh] items-center">
-          <div className="max-w-2xl py-24">
+        <div className="absolute inset-0 bg-gradient-to-l from-background via-background/95 to-background/20 rtl:bg-gradient-to-r" />
+        <div className="page-wrap relative grid min-h-[82vh] items-center gap-10 py-16 lg:grid-cols-[1.02fr_0.98fr]">
+          <div className="max-w-2xl">
             <span className="eyebrow">
               <Sparkles size={16} />
-              {lang === "ar" ? "مساحة لكل موهبة" : "A place for every talent"}
+              {lang === "ar" ? "واجهة رئيسية جاهزة للبناء على أودو" : "Odoo-ready academy homepage"}
             </span>
             <h1 className="display-title mt-5">
               {lang === "ar" ? (
                 <>
-                  نكتشف ما يُبدع فيه <span className="text-primary">طفلك</span>
+                  أكاديمية تكتشف موهبة <span className="text-primary">الطفل</span> وتحوّلها إلى مسار واضح
                 </>
               ) : (
                 <>
-                  Discover what makes your <span className="text-primary">child shine</span>
+                  Discover a child's <span className="text-primary">talent</span> and turn it into a clear path
                 </>
               )}
             </h1>
             <p className="mt-6 max-w-xl text-base leading-8 text-muted-foreground sm:text-lg">
               {lang === "ar"
-                ? "برامج تعليمية وتجارب عملية تساعد الطفل على فهم قدراته، وبناء لغته، والتعبير عن أفكاره بثقة."
-                : "Practical learning experiences that help children understand their strengths, build language skills, and express ideas with confidence."}
+                ? "تصميم رئيسي يعرض برامج الأكاديمية وأسعارها، الدورة التعليمية، الفعاليات، والتسجيل بنفس منطق صفحات الموقع والمتجر والتعلم الإلكتروني والفعاليات في أودو."
+                : "A homepage that presents programs, pricing, learning, events, and registration in the same flow used by Odoo Website, eCommerce, eLearning, and Events."}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button size="lg" asChild>
                 <Link to="/programs">
-                  {lang === "ar" ? "استكشف البرامج" : "Explore programs"}
+                  {lang === "ar" ? "استعرض البرامج" : "Browse programs"}
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link to="/about">{lang === "ar" ? "تعرف علينا" : "Meet the academy"}</Link>
+                <Link to="/join">{lang === "ar" ? "ابدأ التسجيل" : "Start registration"}</Link>
               </Button>
             </div>
-            <div className="mt-10 flex flex-wrap gap-5 text-sm font-bold">
+            <div className="mt-10 flex flex-wrap gap-5 text-sm font-extrabold">
               <span className="flex items-center gap-2">
                 <Star className="fill-sun text-sun" size={20} />
                 5.0 {lang === "ar" ? "من 56 تقييماً" : "from 56 reviews"}
@@ -100,6 +100,51 @@ export function Hero() {
                 <MapPin className="text-aqua" size={20} />
                 {lang === "ar" ? "القطيف" : "Al Qatif"}
               </span>
+            </div>
+          </div>
+          <div className="grid gap-4 lg:justify-self-end">
+            <div className="card max-w-xl overflow-hidden shadow-brand">
+              <div className="brand-stripe" />
+              <div className="p-6 sm:p-7">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <span className="tag bg-berry-soft text-primary">product.template</span>
+                    <h2 className="mt-4 text-2xl font-black leading-tight">
+                      {lang === "ar" ? "تأسيس اللغة الإنجليزية" : "English Foundation"}
+                    </h2>
+                    <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                      {lang === "ar" ? "برنامج قابل للبيع كباقة شهرية أو فصلية." : "A sellable program with monthly and term plans."}
+                    </p>
+                  </div>
+                  <BookOpen className="shrink-0 text-primary" size={30} />
+                </div>
+                <div className="mt-6 grid grid-cols-3 gap-3 text-center text-sm">
+                  <div className="rounded-md bg-muted p-3">
+                    <b className="block text-primary">350</b>
+                    <span className="text-xs text-muted-foreground">{lang === "ar" ? "ر.س بداية" : "SAR from"}</span>
+                  </div>
+                  <div className="rounded-md bg-aqua-soft p-3">
+                    <b className="block text-aqua">6+</b>
+                    <span className="text-xs text-muted-foreground">{lang === "ar" ? "سنوات" : "years"}</span>
+                  </div>
+                  <div className="rounded-md bg-sun-soft p-3">
+                    <b className="block text-sun">12:30</b>
+                    <span className="text-xs text-muted-foreground">{lang === "ar" ? "موعد" : "time"}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="card p-5">
+                <span className="tag bg-aqua-soft text-aqua">event.event</span>
+                <b className="mt-4 block text-lg">{lang === "ar" ? "مختبر المواهب" : "Talents Lab"}</b>
+                <p className="mt-2 text-sm text-muted-foreground">7 {lang === "ar" ? "مقاعد متبقية" : "seats left"}</p>
+              </div>
+              <div className="card p-5">
+                <span className="tag bg-sun-soft text-sun">slide.channel</span>
+                <b className="mt-4 block text-lg">English for Kids</b>
+                <p className="mt-2 text-sm text-muted-foreground">68% {lang === "ar" ? "تقدم" : "progress"}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -121,28 +166,39 @@ export function Hero() {
 export function HomePage() {
   const { lang } = useLanguage();
   const { programs } = usePrograms();
+  const featuredPrograms = programs.slice(0, 4);
+  const odooHomeBlocks = odooModules.filter((module) => ["website", "ecommerce", "elearning", "events", "contacts", "program-admin"].includes(module.id));
+  const totalSeats = academyEvents.reduce((sum, event) => sum + event.seats - event.seatsTaken, 0);
+  const courseSlides = demoCourse.sections.reduce((sum, section) => sum + section.slides.length, 0);
   return (
     <>
       <Hero />
-      <section className="page-wrap py-24">
-        <div className="flex flex-wrap items-end justify-between gap-5">
+      <section className="page-wrap py-20 sm:py-24">
+        <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
           <div>
-            <span className="eyebrow">{lang === "ar" ? "برامجنا" : "Our programs"}</span>
+            <span className="eyebrow">{lang === "ar" ? "واجهة المتجر" : "Storefront"}</span>
             <h2 className="section-title mt-3">
-              {lang === "ar" ? "مسارات تناسب مرحلة طفلك" : "Paths for every learning stage"}
+              {lang === "ar" ? "البرامج تظهر كمنتجات قابلة للاختيار والشراء" : "Programs presented as selectable products"}
             </h2>
+            <p className="mt-4 leading-8 text-muted-foreground">
+              {lang === "ar"
+                ? "كل برنامج له عمر مناسب، وقت حضور، وباقات سعرية واضحة؛ وهي نفس البيانات التي يمكن عرضها من المنتج وخياراته في المتجر."
+                : "Each program has age, time, and clear plans — the same data that can be rendered from products and variants in the store."}
+            </p>
           </div>
-          <Button variant="outline" asChild>
-            <Link to="/programs">{lang === "ar" ? "جميع الأسعار" : "All pricing"}</Link>
-          </Button>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="card p-5"><b className="text-2xl text-primary">{programs.length}</b><span className="mt-1 block text-sm text-muted-foreground">{lang === "ar" ? "برامج منشورة" : "published programs"}</span></div>
+            <div className="card p-5"><b className="text-2xl text-aqua">{academyEvents.length}</b><span className="mt-1 block text-sm text-muted-foreground">{lang === "ar" ? "فعاليات نشطة" : "active events"}</span></div>
+            <div className="card p-5"><b className="text-2xl text-sun">{courseSlides}</b><span className="mt-1 block text-sm text-muted-foreground">{lang === "ar" ? "دروس وأنشطة" : "lessons & activities"}</span></div>
+          </div>
         </div>
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {programs.slice(0, 3).map((p, i) => (
+        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {featuredPrograms.map((p, i) => (
             <article
-              className={`card lift overflow-hidden border-t-4 ${i === 0 ? "border-t-primary" : i === 1 ? "border-t-sun" : "border-t-aqua"}`}
+              className={`card lift flex min-h-[20rem] flex-col overflow-hidden border-t-4 ${i % 3 === 0 ? "border-t-primary" : i % 3 === 1 ? "border-t-sun" : "border-t-aqua"}`}
               key={p.id}
             >
-              <div className="p-6">
+              <div className="flex flex-1 flex-col p-6">
                 <span className="tag bg-muted">{t(p.age, lang)}</span>
                 <h3 className="mt-5 text-xl font-extrabold">
                   <Link to="/programs/$programId" params={{ programId: p.id }} className="transition hover:text-primary">
@@ -153,58 +209,204 @@ export function HomePage() {
                   <Clock3 size={16} />
                   {p.time}
                 </p>
-                <div className="mt-6 flex items-end justify-between">
+                <div className="mt-auto flex items-end justify-between pt-8">
                   <span className="text-sm text-muted-foreground">{lang === "ar" ? "تبدأ من" : "From"}</span>
                   <strong className="text-2xl text-primary">
                     {p.plans[0]?.price ?? 0} <small>{lang === "ar" ? "ر.س" : "SAR"}</small>
                   </strong>
                 </div>
-                <Link
-                  to="/programs/$programId"
-                  params={{ programId: p.id }}
-                  className="mt-4 inline-block text-sm font-extrabold text-primary hover:underline"
-                >
-                  {lang === "ar" ? "تفاصيل البرنامج والباقات" : "Program details & plans"}
-                </Link>
+                <div className="mt-5 grid gap-2">
+                  <Button size="sm" asChild>
+                    <Link to="/programs/$programId" params={{ programId: p.id }}>{lang === "ar" ? "تفاصيل الباقات" : "View plans"}</Link>
+                  </Button>
+                  <Button size="sm" variant="outline" asChild>
+                    <Link to="/join" search={{ program: p.id }}>{lang === "ar" ? "تسجيل سريع" : "Quick register"}</Link>
+                  </Button>
+                </div>
               </div>
             </article>
           ))}
         </div>
+        <div className="mt-8 flex justify-center">
+          <Button variant="outline" asChild>
+            <Link to="/programs">{lang === "ar" ? "عرض جميع البرامج والأسعار" : "View all programs and pricing"}<ArrowIcon size={17} /></Link>
+          </Button>
+        </div>
       </section>
-      <section className="bg-aqua-soft py-20">
-        <div className="page-wrap grid items-center gap-10 md:grid-cols-2">
+
+      <section className="bg-aqua-soft py-20 sm:py-24">
+        <div className="page-wrap grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
           <div>
-            <span className="eyebrow">{lang === "ar" ? "تعلم يتجاوز الصف" : "Learning beyond the classroom"}</span>
+            <span className="eyebrow">{lang === "ar" ? "التعلم الإلكتروني" : "eLearning"}</span>
             <h2 className="section-title mt-3">
-              {lang === "ar" ? "الدرس، النشاط، والتقدم في مكان واحد" : "Lessons, activities, and progress in one place"}
+              {lang === "ar" ? "مسار تعليمي منظم للطفل وولي الأمر" : "A structured learning path for child and parent"}
             </h2>
             <p className="mt-5 leading-8 text-muted-foreground">
               {lang === "ar"
-                ? "يواصل الطفل تعلمه من المنزل عبر محتوى بسيط وتفاعلي، بينما يتابع ولي الأمر إنجازه خطوة بخطوة."
-                : "Children continue at home with clear interactive content, while parents follow progress step by step."}
+                ? "تعرض الرئيسية الدورة كوحدات ودروس وأنشطة وتقدم، ثم تقود الزائر إلى صفحة الدورة الكاملة كما يفعل موديول التعلم الإلكتروني."
+                : "The homepage shows the course as units, lessons, activities, and progress, then leads visitors into the full course page."}
             </p>
-            <Button className="mt-7" asChild>
-              <Link to="/learning">{lang === "ar" ? "شاهد تجربة التعلم" : "View learning experience"}</Link>
-            </Button>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button asChild>
+                <Link to="/learning/english-kids">{lang === "ar" ? "افتح الدورة" : "Open course"}</Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link to="/learning">{lang === "ar" ? "تجربة التعلم" : "Learning preview"}</Link>
+              </Button>
+            </div>
           </div>
-          <div className="card p-6 shadow-brand">
+          <div className="card overflow-hidden shadow-brand">
+            <div className="border-b bg-card p-6">
+              <span className="tag bg-aqua-soft text-aqua">slide.channel</span>
+              <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
+                <div>
+                  <h3 className="text-2xl font-black">{demoCourse.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{t(demoCourse.subtitle, lang)}</p>
+                </div>
+                <strong className="text-3xl text-primary">68%</strong>
+              </div>
+            </div>
+            <div className="p-6">
             <div className="flex items-center justify-between">
-              <span className="tag bg-aqua-soft text-aqua">English for Kids</span>
-              <span className="font-extrabold text-primary">68%</span>
+              <span className="font-extrabold">{lang === "ar" ? "تقدم الطفل" : "Child progress"}</span>
+              <span className="text-sm font-bold text-muted-foreground">{courseSlides} {lang === "ar" ? "عناصر" : "items"}</span>
             </div>
             <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted">
               <div className="h-full w-[68%] bg-aqua" />
             </div>
-            {["Welcome to English", "Alphabet Sounds", "Colors & Shapes"].map((x, i) => (
-              <div className="mt-4 flex items-center gap-3 border-t pt-4" key={x}>
+            {demoCourse.sections.slice(0, 3).map((section, i) => (
+              <div className="mt-4 flex items-center gap-3 border-t pt-4" key={section.title.en}>
                 <span
                   className={`grid size-9 place-items-center rounded-full ${i < 2 ? "bg-primary text-primary-foreground" : "bg-muted"}`}
                 >
                   {i < 2 ? <CheckCircle2 size={18} /> : <Play size={17} />}
                 </span>
-                <span className="font-bold">{x}</span>
+                <span className="font-bold">{t(section.title, lang)}</span>
               </div>
             ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="page-wrap py-20 sm:py-24">
+        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <div>
+            <span className="eyebrow">{lang === "ar" ? "أجندة الأكاديمية" : "Academy calendar"}</span>
+            <h2 className="section-title mt-3">
+              {lang === "ar" ? "فعاليات تظهر من بيانات الحدث والتذاكر" : "Events driven by event and ticket data"}
+            </h2>
+            <p className="mt-5 leading-8 text-muted-foreground">
+              {lang === "ar"
+                ? "تظهر الفعالية بتاريخها، فئتها، مقاعدها، وسعر تذكرتها، مع انتقال مباشر إلى صفحة التفاصيل والحجز."
+                : "Each event shows its date, category, seats, and ticket price, with direct access to booking details."}
+            </p>
+            <div className="mt-7 grid max-w-md grid-cols-2 gap-3">
+              <div className="card bg-berry-soft p-5"><b className="text-3xl text-primary">{totalSeats}</b><span className="mt-1 block text-sm font-bold text-muted-foreground">{lang === "ar" ? "مقاعد متاحة" : "available seats"}</span></div>
+              <div className="card bg-sun-soft p-5"><b className="text-3xl text-sun">{academyEvents.length}</b><span className="mt-1 block text-sm font-bold text-muted-foreground">{lang === "ar" ? "فعاليات منشورة" : "published events"}</span></div>
+            </div>
+          </div>
+          <div className="grid gap-4">
+            {academyEvents.map((event) => {
+              const remaining = event.seats - event.seatsTaken;
+              const price = event.tickets[0]?.price ?? 0;
+              return (
+                <article className="card grid gap-4 p-5 sm:grid-cols-[auto_1fr_auto] sm:items-center" key={event.id}>
+                  <div className="grid size-20 place-items-center rounded-md bg-muted text-center">
+                    <b className="block text-2xl text-primary">{event.day}</b>
+                    <span className="text-xs font-extrabold text-muted-foreground">{t(event.month, lang)}</span>
+                  </div>
+                  <div>
+                    <span className="tag bg-aqua-soft text-aqua">event.event</span>
+                    <h3 className="mt-2 text-xl font-black">{t(event.title, lang)}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">{t(event.type, lang)} · {t(event.time, lang)} · {remaining} {lang === "ar" ? "مقاعد" : "seats"}</p>
+                  </div>
+                  <Button variant="outline" asChild>
+                    <Link to="/events/$eventId" params={{ eventId: event.id }}>
+                      {price === 0 ? (lang === "ar" ? "مجاني" : "Free") : `${price} ${lang === "ar" ? "ر.س" : "SAR"}`}
+                      <ArrowIcon size={16} />
+                    </Link>
+                  </Button>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-muted py-20 sm:py-24">
+        <div className="page-wrap">
+          <div className="flex flex-wrap items-end justify-between gap-5">
+            <div>
+              <span className="eyebrow">{lang === "ar" ? "بيانات أودو القياسية" : "Standard Odoo data"}</span>
+              <h2 className="section-title mt-3">
+                {lang === "ar" ? "الصفحة الرئيسية كمجموعة أقسام قابلة للبناء" : "Homepage blocks ready to rebuild"}
+              </h2>
+            </div>
+            <Button variant="outline" asChild>
+              <Link to="/about">{lang === "ar" ? "خريطة النماذج" : "Model map"}<ArrowIcon size={17} /></Link>
+            </Button>
+          </div>
+          <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {odooHomeBlocks.map((module) => (
+              <article className="card p-6" key={module.id}>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <span className="tag bg-card text-primary">{module.appName}</span>
+                    <h3 className="mt-4 text-xl font-black">{t(module.name, lang)}</h3>
+                  </div>
+                  {module.id === "events" ? <CalendarDays className="text-aqua" /> : module.id === "elearning" ? <GraduationCap className="text-aqua" /> : module.id === "contacts" ? <Users className="text-aqua" /> : <BookOpen className="text-aqua" />}
+                </div>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {module.models.slice(0, 3).map((model) => (
+                    <span className="rounded-full border bg-background px-3 py-1 text-xs font-bold text-muted-foreground" key={model.model}>{model.model}</span>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="page-wrap py-20 sm:py-24">
+        <div className="grid overflow-hidden rounded-lg border bg-card shadow-brand lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="p-7 sm:p-10">
+            <span className="eyebrow">{lang === "ar" ? "من الزائر إلى التسجيل" : "Visitor to registration"}</span>
+            <h2 className="section-title mt-3">
+              {lang === "ar" ? "مسار واضح لولي الأمر من الاستفسار حتى اختيار البرنامج" : "A clear parent journey from inquiry to program choice"}
+            </h2>
+            <p className="mt-5 leading-8 text-muted-foreground">
+              {lang === "ar"
+                ? "تجمع الصفحة الرئيسية أهم نقاط القرار: برنامج مناسب، موعد فعالية، تجربة تعلم، ومساعد ذكي يفتح تذكرة أو يحوّل الاستفسار للتسجيل."
+                : "The homepage collects the key decisions: a suitable program, an event date, a learning preview, and an assistant that can open a ticket or guide registration."}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button asChild>
+                <Link to="/assistant">{lang === "ar" ? "اسأل المساعد" : "Ask assistant"}<MessageCircle size={18} /></Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link to="/contact">{lang === "ar" ? "تواصل معنا" : "Contact us"}</Link>
+              </Button>
+            </div>
+          </div>
+          <div className="grid gap-0 border-t lg:border-s lg:border-t-0">
+            {[
+              [Search, lang === "ar" ? "يبحث ولي الأمر عن البرنامج" : "Parent explores programs", "website.page"],
+              [Heart, lang === "ar" ? "تُحفظ بيانات التواصل" : "Contact details are captured", "res.partner"],
+              [Ticket, lang === "ar" ? "يُنشأ تسجيل أو تذكرة" : "Registration or ticket is created", "sale.order"],
+              [Award, lang === "ar" ? "تظهر المتابعة والتقدم" : "Progress and follow-up appear", "slide.slide.partner"],
+            ].map(([Icon, label, model]) => {
+              const StepIcon = Icon as LucideIcon;
+              return (
+                <div className="flex items-center gap-4 border-b p-5 last:border-b-0" key={String(model)}>
+                  <span className="grid size-12 shrink-0 place-items-center rounded-md bg-berry-soft text-primary"><StepIcon size={22} /></span>
+                  <div>
+                    <b>{String(label)}</b>
+                    <span className="mt-1 block text-xs font-bold text-muted-foreground">{String(model)}</span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
