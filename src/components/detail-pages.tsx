@@ -25,6 +25,7 @@ import { useLanguage } from "@/components/site-shell";
 import { t, type Bilingual } from "@/data/site";
 import { usePrograms } from "@/lib/programs-store";
 import { academyEvents, demoCourse, odooModules, programDetails, slideKindLabel } from "@/data/odoo";
+import type { Slide } from "@/data/odoo";
 
 export function PageIntro({
   eyebrow,
