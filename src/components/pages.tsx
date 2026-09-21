@@ -33,9 +33,9 @@ import eventNationalDay from "@/assets/event-national-day.jpg";
 import eventTalentsLab from "@/assets/event-talents-lab.jpg";
 import bird from "@/assets/kristina-bird.png.asset.json";
 
-function Arrow() {
+function ArrowIcon({ size = 18 }: { size?: number }) {
   const { lang } = useLanguage();
-  return lang === "ar" ? ArrowLeft : ArrowRight;
+  return lang === "ar" ? <ArrowLeft size={size} /> : <ArrowRight size={size} />;
 }
 
 type Feature = [LucideIcon, string, string];
@@ -43,7 +43,6 @@ type FilterItem = [string, string, string];
 
 export function Hero() {
   const { lang } = useLanguage();
-  const ArrowComp = Arrow();
   const features: Feature[] = [
     [Heart, "الرعاية التي تمنح الأمان", "Care that feels safe"],
     [Search, "اكتشاف نقاط القوة", "Discovering strengths"],
@@ -86,7 +85,6 @@ export function Hero() {
               <Button size="lg" asChild>
                 <Link to="/programs">
                   {lang === "ar" ? "استكشف البرامج" : "Explore programs"}
-                  <ArrowComp size={18} />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
@@ -459,7 +457,7 @@ export function EventsPage() {
             </div>
             <Button size="lg" className="mt-6 w-full" asChild>
               <Link to="/events/$eventId" params={{ eventId: featured.id }}>
-                <Ticket size={19} />{lang === "ar" ? "احجز تذكرتك" : "Book your ticket"}<Arrow />
+                <Ticket size={19} />{lang === "ar" ? "احجز تذكرتك" : "Book your ticket"}<ArrowIcon size={19} />
               </Link>
             </Button>
           </div>
@@ -495,7 +493,7 @@ export function EventsPage() {
                     </Link>
                     <div className="mt-4 flex items-center justify-between gap-4 border-b pb-4">
                       <div className="text-sm"><b className={remaining <= 8 ? "text-primary" : "text-aqua"}>{remaining} {lang === "ar" ? "مقاعد متبقية" : "seats left"}</b><span className="mt-1 block text-muted-foreground">{price === 0 ? (lang === "ar" ? "دخول مجاني" : "Free entry") : `${price} ${lang === "ar" ? "ر.س" : "SAR"}`}</span></div>
-                      <Button variant="link" className="px-0" asChild><Link to="/events/$eventId" params={{ eventId: event.id }}>{lang === "ar" ? "التفاصيل والحجز" : "Details & booking"}<Arrow /></Link></Button>
+                      <Button variant="link" className="px-0" asChild><Link to="/events/$eventId" params={{ eventId: event.id }}>{lang === "ar" ? "التفاصيل والحجز" : "Details & booking"}<ArrowIcon size={16} /></Link></Button>
                     </div>
                   </article>
                 );
@@ -506,7 +504,7 @@ export function EventsPage() {
 
         <section className="mt-16 grid items-center gap-6 border-y bg-aqua-soft px-6 py-9 md:grid-cols-[1fr_auto] md:px-10">
           <div><span className="eyebrow">{lang === "ar" ? "قبل الحضور" : "Before you visit"}</span><h2 className="mt-2 text-2xl font-black">{lang === "ar" ? "كل ما تحتاجه الأسرة في صفحة الفعالية" : "Everything your family needs in one event page"}</h2><p className="mt-2 text-sm leading-7 text-muted-foreground">{lang === "ar" ? "اطّلع على البرنامج الزمني، الفئة العمرية، التذاكر والمقاعد المتاحة قبل تأكيد التسجيل." : "Review the schedule, age group, tickets, and available seats before confirming registration."}</p></div>
-          <Button variant="dark" asChild><Link to="/contact">{lang === "ar" ? "تواصل مع الأكاديمية" : "Contact the academy"}<Arrow /></Link></Button>
+          <Button variant="dark" asChild><Link to="/contact">{lang === "ar" ? "تواصل مع الأكاديمية" : "Contact the academy"}<ArrowIcon size={16} /></Link></Button>
         </section>
       </div>
     </div>
