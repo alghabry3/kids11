@@ -16,6 +16,8 @@ export const Route = createFileRoute("/events")({
         content:
           "استكشف الأنشطة والفعاليات القادمة وسجل اهتمامك بسهولة عبر الأكاديمية في القطيف.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: () => <EventsPage />,

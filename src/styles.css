@@ -3,7 +3,8 @@
 @import "tw-animate-css";
 
 @theme inline {
-  --font-sans: "Alexandria", "Nunito", sans-serif;
+  --font-sans: "Manrope", "Alexandria", sans-serif;
+  --font-display: "Sora", "Alexandria", sans-serif;
   --color-background: var(--background); --color-foreground: var(--foreground);
   --color-card: var(--card); --color-card-foreground: var(--card-foreground);
   --color-primary: var(--primary); --color-primary-foreground: var(--primary-foreground);
