@@ -70,7 +70,7 @@ function Breadcrumb({ items }: { items: { label: string; to?: string }[] }) {
   );
 }
 
-const slideIcons: Record<string, LucideIcon | undefined> = { video: CirclePlay, content: FileText, activity: Puzzle, quiz: HelpCircle };
+const slideIcons: Record<Slide["kind"], LucideIcon> = { video: CirclePlay, content: FileText, activity: Puzzle, quiz: HelpCircle };
 
 // ================= صفحة تفاصيل البرنامج — نمط صفحة منتج في المتجر =================
 
