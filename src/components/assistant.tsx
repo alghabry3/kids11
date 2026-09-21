@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/components/site-shell";
+import { useLanguage } from "@/components/site-language";
 import { t, type Lang } from "@/data/site";
 import {
   assistantFlow,

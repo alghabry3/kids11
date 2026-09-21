@@ -1,7 +1,7 @@
 import { CheckCircle2, Loader2, MessageCircle, Sparkles, Wand2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/components/site-shell";
+import { useLanguage } from "@/components/site-language";
 import { t } from "@/data/site";
 import { usePrograms } from "@/lib/programs-store";
 import { recommendProgram, type Recommendation } from "@/lib/recommend.functions";

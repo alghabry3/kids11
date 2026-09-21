@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/components/site-shell";
+import { useLanguage } from "@/components/site-language";
 import { t } from "@/data/site";
 import { usePrograms } from "@/lib/programs-store";
 import { OdooModulesSection } from "@/components/detail-pages";
