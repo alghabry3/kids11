@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   Sparkles,
   Star,
+  Ticket,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -25,7 +26,11 @@ import { useLanguage } from "@/components/site-language";
 import { t } from "@/data/site";
 import { usePrograms } from "@/lib/programs-store";
 import { OdooModulesSection } from "@/components/detail-pages";
+import { academyEvents } from "@/data/odoo";
 import hero from "@/assets/academy-hero.jpg";
+import eventLanguageDay from "@/assets/event-language-day.jpg";
+import eventNationalDay from "@/assets/event-national-day.jpg";
+import eventTalentsLab from "@/assets/event-talents-lab.jpg";
 import bird from "@/assets/kristina-bird.png.asset.json";
 
 function Arrow() {
@@ -386,79 +391,125 @@ export function LearningPage() {
 
 export function EventsPage() {
   const { lang } = useLanguage();
-  const events = [
-    {
-      id: "national-day",
-      day: "23",
-      month: lang === "ar" ? "سبتمبر" : "SEP",
-      title: lang === "ar" ? "احتفاء اليوم الوطني" : "Saudi National Day Celebration",
-      type: lang === "ar" ? "فعالية مجتمعية" : "Community event",
-    },
-    {
-      id: "talents-lab",
-      day: "08",
-      month: lang === "ar" ? "أكتوبر" : "OCT",
-      title: lang === "ar" ? "مختبر المواهب الصغير" : "Little Talents Lab",
-      type: lang === "ar" ? "ورشة أطفال" : "Kids workshop",
-    },
-    {
-      id: "language-day",
-      day: "22",
-      month: lang === "ar" ? "أكتوبر" : "OCT",
-      title: lang === "ar" ? "يوم اللغة المرح" : "Fun Language Day",
-      type: lang === "ar" ? "نشاط تعليمي" : "Learning activity",
-    },
+  const [filter, setFilter] = useState("all");
+  const [query, setQuery] = useState("");
+  const featured = academyEvents.find((event) => event.id === "talents-lab") ?? academyEvents[0];
+  const eventImages: Record<string, string> = {
+    "national-day": eventNationalDay,
+    "talents-lab": eventTalentsLab,
+    "language-day": eventLanguageDay,
+  };
+  const filters = [
+    { id: "all", ar: "جميع الفعاليات", en: "All events" },
+    { id: "community", ar: "مجتمعية", en: "Community" },
+    { id: "workshop", ar: "ورش الأطفال", en: "Workshops" },
+    { id: "learning", ar: "تعليمية", en: "Learning" },
   ];
+  const filteredEvents = academyEvents.filter((event) => {
+    const category = event.id === "national-day" ? "community" : event.id === "talents-lab" ? "workshop" : "learning";
+    const matchesFilter = filter === "all" || category === filter;
+    const searchText = `${t(event.title, lang)} ${t(event.type, lang)} ${t(event.audience, lang)}`.toLowerCase();
+    return matchesFilter && searchText.includes(query.trim().toLowerCase());
+  });
+
+  if (!featured) return null;
+
+  const featuredRemaining = featured.seats - featured.seatsTaken;
+  const featuredPrice = featured.tickets[0]?.price ?? 0;
   return (
-    <PageIntro
-      eyebrow={lang === "ar" ? "الفعاليات" : "Events"}
-      title={lang === "ar" ? "أيام تصنع ذكريات ومعرفة" : "Days filled with discovery"}
-      text={lang === "ar" ? "استكشف الأنشطة المقبلة وسجل اهتمامك بسهولة." : "Explore upcoming activities and register your interest."}
-    >
-      <div className="grid gap-5">
-        {events.map((e, i) => (
-          <article className="card grid items-center gap-5 p-5 sm:grid-cols-[90px_1fr_auto]" key={e.title}>
-            <div
-              className={`grid h-20 place-items-center rounded-md ${i === 0 ? "bg-berry-soft text-primary" : i === 1 ? "bg-aqua-soft text-aqua" : "bg-sun-soft text-foreground"}`}
-            >
-              <div className="text-center">
-                <b className="block text-2xl">{e.day}</b>
-                <small className="font-extrabold">{e.month}</small>
-              </div>
+    <div className="bg-background pb-24 pt-12 sm:pt-16">
+      <div className="page-wrap">
+        <header className="flex flex-col justify-between gap-5 border-b-4 border-foreground pb-7 md:flex-row md:items-end">
+          <div>
+            <span className="eyebrow"><CalendarDays size={17} />{lang === "ar" ? "أجندة الأكاديمية" : "Academy calendar"}</span>
+            <h1 className="mt-3 font-display text-5xl font-black leading-none sm:text-7xl">
+              {lang === "ar" ? "فعالياتنا" : "Our events"}
+            </h1>
+            <p className="mt-4 text-lg font-semibold text-muted-foreground">
+              {lang === "ar" ? "أنشطة مختارة تجمع بين المعرفة والمرح والوقت العائلي." : "Curated activities blending learning, play, and family time."}
+            </p>
+          </div>
+          <p className="max-w-sm border-s-2 border-aqua ps-4 text-sm leading-7 text-muted-foreground">
+            {lang === "ar" ? "ورش وتجارب تعليمية مصممة لتمنح كل طفل مساحة يكتشف فيها اهتماماته ويشارك بثقة." : "Workshops and learning experiences where every child can discover interests and participate with confidence."}
+          </p>
+        </header>
+
+        <section className="mt-10 grid overflow-hidden rounded-lg border bg-card shadow-brand lg:grid-cols-12">
+          <div className="relative min-h-[340px] overflow-hidden lg:col-span-7 lg:min-h-[580px]">
+            <img src={eventTalentsLab} width={1408} height={912} alt={t(featured.title, lang)} className="absolute inset-0 h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent lg:hidden" />
+            <span className="absolute start-5 top-5 rounded-full bg-primary px-4 py-2 text-sm font-extrabold text-primary-foreground shadow-brand">
+              {lang === "ar" ? "الفعالية المختارة" : "Featured event"}
+            </span>
+          </div>
+          <div className="flex flex-col justify-center bg-muted/45 p-6 sm:p-9 lg:col-span-5 lg:p-11">
+            <div className="flex items-center gap-4 text-primary">
+              <span className="font-display text-5xl font-black">{featured.day}</span>
+              <div className="font-extrabold leading-6"><span className="block">{t(featured.month, lang)}</span><span className="text-xs text-muted-foreground">{t(featured.type, lang)}</span></div>
             </div>
-            <div>
-              <span className="tag bg-muted">{e.type}</span>
-              <h2 className="mt-3 text-xl font-extrabold">
-                <Link to="/events/$eventId" params={{ eventId: e.id }} className="transition hover:text-primary">
-                  {e.title}
-                </Link>
-              </h2>
-              <p className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-                <Clock3 size={16} />
-                {lang === "ar" ? "5:00 – 7:00 مساءً · مقر الأكاديمية" : "5:00 – 7:00 PM · Academy venue"}
-              </p>
-              <Link
-                to="/events/$eventId"
-                params={{ eventId: e.id }}
-                className="mt-2 inline-block text-sm font-extrabold text-primary hover:underline"
-              >
-                {lang === "ar" ? "التفاصيل والمقاعد والتذاكر" : "Details, seats & tickets"}
-              </Link>
+            <h2 className="mt-6 font-display text-3xl font-black leading-tight sm:text-4xl">{t(featured.title, lang)}</h2>
+            <p className="mt-5 line-clamp-4 text-base leading-8 text-muted-foreground">{t(featured.description, lang)}</p>
+            <div className="mt-7 grid grid-cols-2 gap-3">
+              <div className="rounded-md border bg-card p-4"><Users className="mb-3 text-aqua" size={20} /><small className="block text-muted-foreground">{lang === "ar" ? "المقاعد المتبقية" : "Seats remaining"}</small><b className="mt-1 block text-xl">{featuredRemaining}</b></div>
+              <div className="rounded-md border bg-card p-4"><Clock3 className="mb-3 text-sun" size={20} /><small className="block text-muted-foreground">{lang === "ar" ? "الوقت" : "Time"}</small><b className="mt-1 block text-sm">{t(featured.time, lang)}</b></div>
             </div>
-            <Button asChild>
-              <Link to="/join">
-                {lang === "ar" ? "سجل اهتمامك" : "Register interest"}
+            <div className="mt-4 flex items-center justify-between rounded-md border border-primary/20 bg-berry-soft p-4 text-sm">
+              <span className="font-bold">{t(featured.audience, lang)}</span>
+              <strong className="shrink-0 text-primary">{featuredPrice === 0 ? (lang === "ar" ? "مجاني" : "Free") : `${featuredPrice} ${lang === "ar" ? "ر.س" : "SAR"}`}</strong>
+            </div>
+            <Button size="lg" className="mt-6 w-full" asChild>
+              <Link to="/events/$eventId" params={{ eventId: featured.id }}>
+                <Ticket size={19} />{lang === "ar" ? "احجز تذكرتك" : "Book your ticket"}<Arrow />
               </Link>
             </Button>
-          </article>
-        ))}
+          </div>
+        </section>
+
+        <section className="mt-16">
+          <div className="flex flex-col justify-between gap-5 border-b pb-6 lg:flex-row lg:items-end">
+            <div><span className="eyebrow">{lang === "ar" ? "استكشف الأجندة" : "Explore the calendar"}</span><h2 className="mt-2 text-3xl font-black">{lang === "ar" ? "فعاليات تناسب اهتمامات طفلك" : "Events for every interest"}</h2></div>
+            <label className="relative block w-full lg:max-w-xs">
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+              <span className="sr-only">{lang === "ar" ? "ابحث في الفعاليات" : "Search events"}</span>
+              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={lang === "ar" ? "ابحث عن فعالية…" : "Search events…"} className="h-11 w-full rounded-md border bg-card ps-10 pe-4 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/30" />
+            </label>
+          </div>
+          <div className="mt-5 flex gap-2 overflow-x-auto pb-2">
+            {filters.map((item) => <Button key={item.id} size="sm" variant={filter === item.id ? "primary" : "outline"} onClick={() => setFilter(item.id)}>{lang === "ar" ? item.ar : item.en}</Button>)}
+          </div>
+
+          {filteredEvents.length > 0 ? (
+            <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {filteredEvents.map((event) => {
+                const remaining = event.seats - event.seatsTaken;
+                const price = event.tickets[0]?.price ?? 0;
+                return (
+                  <article className="group min-w-0" key={event.id}>
+                    <Link to="/events/$eventId" params={{ eventId: event.id }} className="relative block aspect-[4/5] overflow-hidden rounded-lg bg-muted">
+                      <img loading="lazy" src={eventImages[event.id]} width={912} height={1104} alt={t(event.title, lang)} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent" />
+                      <div className="absolute inset-x-0 bottom-0 p-6 text-ink-foreground">
+                        <span className="text-sm font-bold text-sun">{event.day} {t(event.month, lang)} · {t(event.type, lang)}</span>
+                        <h3 className="mt-2 text-2xl font-black leading-tight">{t(event.title, lang)}</h3>
+                      </div>
+                    </Link>
+                    <div className="mt-4 flex items-center justify-between gap-4 border-b pb-4">
+                      <div className="text-sm"><b className={remaining <= 8 ? "text-primary" : "text-aqua"}>{remaining} {lang === "ar" ? "مقاعد متبقية" : "seats left"}</b><span className="mt-1 block text-muted-foreground">{price === 0 ? (lang === "ar" ? "دخول مجاني" : "Free entry") : `${price} ${lang === "ar" ? "ر.س" : "SAR"}`}</span></div>
+                      <Button variant="link" className="px-0" asChild><Link to="/events/$eventId" params={{ eventId: event.id }}>{lang === "ar" ? "التفاصيل والحجز" : "Details & booking"}<Arrow /></Link></Button>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          ) : <div className="mt-8 rounded-lg border border-dashed p-10 text-center text-muted-foreground">{lang === "ar" ? "لا توجد فعاليات مطابقة لبحثك." : "No events match your search."}</div>}
+        </section>
+
+        <section className="mt-16 grid items-center gap-6 border-y bg-aqua-soft px-6 py-9 md:grid-cols-[1fr_auto] md:px-10">
+          <div><span className="eyebrow">{lang === "ar" ? "قبل الحضور" : "Before you visit"}</span><h2 className="mt-2 text-2xl font-black">{lang === "ar" ? "كل ما تحتاجه الأسرة في صفحة الفعالية" : "Everything your family needs in one event page"}</h2><p className="mt-2 text-sm leading-7 text-muted-foreground">{lang === "ar" ? "اطّلع على البرنامج الزمني، الفئة العمرية، التذاكر والمقاعد المتاحة قبل تأكيد التسجيل." : "Review the schedule, age group, tickets, and available seats before confirming registration."}</p></div>
+          <Button variant="dark" asChild><Link to="/contact">{lang === "ar" ? "تواصل مع الأكاديمية" : "Contact the academy"}<Arrow /></Link></Button>
+        </section>
       </div>
-      <p className="mt-6 text-sm text-muted-foreground">
-        {lang === "ar"
-          ? "الفعاليات المعروضة نموذجية للمعاينة، وتُحدّث بالمواعيد المعتمدة من الأكاديمية."
-          : "Events shown are preview content and will be updated with confirmed academy dates."}
-      </p>
-    </PageIntro>
+    </div>
   );
 }
 
