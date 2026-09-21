@@ -92,7 +92,7 @@ export const askAssistant = createServerFn({ method: "POST" })
           return academyEvents.map((e) => ({
             id: e.id,
             title: e.title[lang],
-            date: e.date[lang],
+            date: `${e.day} ${e.month[lang]} · ${e.time[lang]}`,
             seats: `${e.seatsTaken}/${e.seats}`,
             url: `/events/${e.id}`,
           }));
