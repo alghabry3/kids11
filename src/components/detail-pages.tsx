@@ -21,10 +21,11 @@ import {
 } from "lucide-react";
 import { useMemo, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/components/site-shell";
+import { useLanguage } from "@/components/site-language";
 import { t, type Bilingual } from "@/data/site";
 import { usePrograms } from "@/lib/programs-store";
 import { academyEvents, demoCourse, odooModules, programDetails, slideKindLabel } from "@/data/odoo";
+import type { Slide } from "@/data/odoo";
 
 export function PageIntro({
   eyebrow,
@@ -70,7 +71,7 @@ function Breadcrumb({ items }: { items: { label: string; to?: string }[] }) {
   );
 }
 
-const slideIcons: Record<string, LucideIcon | undefined> = { video: CirclePlay, content: FileText, activity: Puzzle, quiz: HelpCircle };
+const slideIcons: Record<Slide["kind"], LucideIcon> = { video: CirclePlay, content: FileText, activity: Puzzle, quiz: HelpCircle };
 
 // ================= صفحة تفاصيل البرنامج — نمط صفحة منتج في المتجر =================
 

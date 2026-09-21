@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Pencil, Plus, RotateCcw, Save, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/components/site-shell";
+import { useLanguage } from "@/components/site-language";
 import { t } from "@/data/site";
 import { usePrograms, slugify, type Plan, type Program } from "@/lib/programs-store";
 
