@@ -503,89 +503,147 @@ export function ProgramsPage() {
 export function LearningPage() {
   const { lang } = useLanguage();
   const [done, setDone] = useState<boolean[]>([true, true, false, false]);
-  const lessons = [
-    { ar: "مرحباً بك في الإنجليزية", en: "Welcome to English" },
-    { ar: "أصوات الحروف", en: "Alphabet Sounds" },
-    { ar: "الألوان والأشكال", en: "Colors & Shapes" },
-    { ar: "كلمات الصف الأساسية", en: "Classroom Words" },
+  const [category, setCategory] = useState("all");
+  const [query, setQuery] = useState("");
+  const lessons = demoCourse.sections.map((section, index) => ({
+    title: section.slides[0]?.title ?? section.title,
+    meta: section.title,
+    minutes: section.slides.reduce((sum, slide) => sum + slide.minutes, 0),
+    kind: section.slides.some((slide) => slide.kind === "quiz") ? "quiz" : "video",
+    index,
+  }));
+  const courseCatalog = [
+    {
+      id: "english-kids",
+      title: "English for Kids",
+      subtitle: { ar: "اللغة الإنجليزية للأطفال", en: "English foundations for children" },
+      category: "languages",
+      level: { ar: "تمهيدي", en: "Starter" },
+      lessons: 9,
+      hours: 1,
+      rating: 4.9,
+      progress: 50,
+    },
+    {
+      id: "phonics",
+      title: "Phonics Adventures",
+      subtitle: { ar: "رحلة ممتعة مع أصوات الحروف", en: "A playful journey through letter sounds" },
+      category: "languages",
+      level: { ar: "مبتدئ", en: "Beginner" },
+      lessons: 12,
+      hours: 2,
+      rating: 4.8,
+      progress: 0,
+    },
+    {
+      id: "creative-skills",
+      title: lang === "ar" ? "المهارات الإبداعية" : "Creative Skills",
+      subtitle: { ar: "أنشطة قصيرة تنمّي التعبير والخيال", en: "Short activities for expression and imagination" },
+      category: "skills",
+      level: { ar: "جميع المستويات", en: "All levels" },
+      lessons: 8,
+      hours: 1,
+      rating: 4.7,
+      progress: 0,
+    },
   ];
-  return (
-    <PageIntro
-      eyebrow={lang === "ar" ? "التعلم الإلكتروني" : "eLearning"}
-      title="English for Kids"
-      text={
-        lang === "ar"
-          ? "نموذج تفاعلي لمسار الطفل التعليمي ومتابعة الإنجاز."
-          : "An interactive preview of the child's learning path and progress."
-      }
-    >
-      <div className="grid gap-6 lg:grid-cols-[1fr_1.7fr]">
-        <aside className="card p-6">
-          <div className="grid size-14 place-items-center rounded-md bg-aqua-soft text-aqua">
-            <GraduationCap />
-          </div>
-          <h2 className="mt-5 text-xl font-extrabold">
-            {lang === "ar" ? "أساسيات اللغة الإنجليزية" : "English Foundations"}
-          </h2>
-          <p className="mt-2 text-sm leading-7 text-muted-foreground">
-            {lang === "ar" ? "مفردات وأصوات وأنشطة قصيرة تناسب الأطفال." : "Short vocabulary, phonics and playful activities."}
-          </p>
-          <div className="mt-6 h-2 rounded-full bg-muted">
-            <div
-              className="h-full rounded-full bg-primary"
-              style={{ width: `${(done.filter(Boolean).length / 4) * 100}%` }}
-            />
-          </div>
-          <p className="mt-2 text-xs font-bold">
-            {done.filter(Boolean).length} / 4 {lang === "ar" ? "دروس مكتملة" : "lessons complete"}
-          </p>
-          <Button variant="outline" className="mt-5 w-full" asChild>
-            <Link to="/learning/english-kids">{lang === "ar" ? "افتح تجربة المسار الكاملة" : "Open the full course"}</Link>
-          </Button>
-        </aside>
-        <div className="card divide-y">
-          {lessons.map((l, i) => (
-            <button
-              key={l.en}
-              className="flex w-full items-center gap-4 p-5 text-start hover:bg-muted/50"
-              onClick={() => setDone((d) => d.map((v, j) => (j === i ? !v : v)))}
-            >
-              <span
-                className={`grid size-11 shrink-0 place-items-center rounded-full ${done[i] ? "bg-primary text-primary-foreground" : "bg-muted"}`}
-              >
-                {done[i] ? <CheckCircle2 /> : <Play size={18} />}
-              </span>
+  const categories = [
+    { id: "all", ar: "كل الدورات", en: "All courses" },
+    { id: "languages", ar: "اللغات", en: "Languages" },
+    { id: "skills", ar: "المهارات", en: "Skills" },
+  ];
+  const filteredCourses = courseCatalog.filter((course) => {
+    const matchesCategory = category === "all" || course.category === category;
+    const searchable = `${course.title} ${course.subtitle.ar} ${course.subtitle.en}`.toLowerCase();
+    return matchesCategory && searchable.includes(query.trim().toLowerCase());
+  });
+  const completed = done.filter(Boolean).length;
+  const progress = Math.round((completed / lessons.length) * 100);
 
-              <span className="flex-1">
-                <b>{lang === "ar" ? l.ar : l.en}</b>
-                <small className="mt-1 block text-muted-foreground">
-                  {lang === "ar" ? "نشاط تفاعلي · 8 دقائق" : "Interactive activity · 8 min"}
-                </small>
-              </span>
-              <span className="text-xs font-bold text-primary">
-                {done[i] ? (lang === "ar" ? "مكتمل" : "Done") : lang === "ar" ? "ابدأ" : "Start"}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="mt-8 card flex flex-wrap items-center justify-between gap-4 bg-sun-soft p-6">
-        <div className="flex items-center gap-4">
-          <Award className="text-sun" size={36} />
-          <div>
-            <b>{lang === "ar" ? "شهادة إتمام المسار" : "Course completion certificate"}</b>
-            <p className="text-sm text-muted-foreground">
-              {lang === "ar"
-                ? "تُفتح بعد إكمال جميع الدروس والتقييم."
-                : "Unlocked after lessons and assessment are completed."}
-            </p>
+  return (
+    <main className="pb-24">
+      <section className="border-b bg-card">
+        <div className="page-wrap py-12 sm:py-16">
+          <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+            <div className="max-w-2xl">
+              <span className="eyebrow"><GraduationCap size={17} />{lang === "ar" ? "أكاديمية كريستينا الرقمية" : "Kristina Digital Academy"}</span>
+              <h1 className="section-title mt-4">{lang === "ar" ? "مساحة تعلم تشجّع الطفل على الإنجاز" : "A learning space that celebrates progress"}</h1>
+              <p className="mt-4 max-w-xl leading-8 text-muted-foreground">{lang === "ar" ? "دورات قصيرة ومنظمة، أنشطة تفاعلية، وتقدم واضح يمكن للطفل وولي الأمر متابعته خطوة بخطوة." : "Short structured courses, interactive activities, and clear progress for children and parents to follow."}</p>
+            </div>
+            <div className="flex gap-3">
+              <div className="rounded-md bg-aqua-soft px-5 py-4 text-center"><b className="block text-2xl text-aqua">3</b><span className="text-xs font-bold text-muted-foreground">{lang === "ar" ? "دورات متاحة" : "Courses"}</span></div>
+              <div className="rounded-md bg-sun-soft px-5 py-4 text-center"><b className="block text-2xl text-sun">9</b><span className="text-xs font-bold text-muted-foreground">{lang === "ar" ? "أوسمة" : "Badges"}</span></div>
+            </div>
           </div>
         </div>
-        <Button variant="outline" disabled>
-          {lang === "ar" ? "غير متاحة بعد" : "Not yet available"}
-        </Button>
-      </div>
-    </PageIntro>
+      </section>
+
+      <section className="page-wrap grid gap-7 py-10 lg:grid-cols-[0.72fr_1.58fr] lg:items-start">
+        <aside className="space-y-5 lg:sticky lg:top-24">
+          <div className="card overflow-hidden shadow-brand">
+            <div className="brand-stripe" />
+            <div className="p-6 text-center">
+              <div className="mx-auto grid size-24 place-items-center rounded-full border-8 border-sun-soft bg-sun text-3xl font-black text-accent-foreground">1</div>
+              <p className="mt-4 text-xs font-extrabold text-muted-foreground">{lang === "ar" ? "رتبة المتعلم" : "Learner rank"}</p>
+              <h2 className="mt-1 text-2xl font-black text-primary">Doctor</h2>
+              <p className="mt-1 text-sm text-muted-foreground">{lang === "ar" ? "أهلاً بك، علي" : "Welcome, Ali"}</p>
+              <div className="mt-6 text-start">
+                <div className="flex items-center justify-between text-xs font-extrabold"><span>{lang === "ar" ? "نحو الرتبة التالية" : "Next rank"}</span><span>{progress}%</span></div>
+                <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-sun transition-all" style={{ width: `${progress}%` }} /></div>
+              </div>
+              <div className="mt-5 flex items-center justify-between rounded-md border bg-aqua-soft p-3">
+                <span className="text-sm font-extrabold text-aqua">{lang === "ar" ? "الأوسمة المحققة" : "Earned badges"}</span>
+                <div className="flex gap-1" aria-label={lang === "ar" ? "ثلاثة أوسمة" : "Three badges"}><Award className="text-sun" size={20} /><Star className="fill-aqua text-aqua" size={20} /><Sparkles className="text-primary" size={20} /></div>
+              </div>
+            </div>
+          </div>
+          <div className="card p-5">
+            <h3 className="font-black text-aqua">{lang === "ar" ? "أحدث الإنجازات" : "Latest achievements"}</h3>
+            <div className="mt-4 flex gap-3 border-t pt-4"><span className="grid size-10 shrink-0 place-items-center rounded-md bg-berry-soft text-primary"><CheckCircle2 size={20} /></span><div><b className="text-sm">{lang === "ar" ? "إتمام درس أصوات الحروف" : "Alphabet Sounds completed"}</b><p className="mt-1 text-xs text-muted-foreground">{lang === "ar" ? "آخر نشاط مسجل في المسار" : "Latest activity in your track"}</p></div></div>
+          </div>
+        </aside>
+
+        <div className="space-y-8">
+          <section className="relative overflow-hidden rounded-lg bg-ink p-7 text-ink-foreground shadow-brand sm:p-10">
+            <div className="relative z-10 max-w-2xl">
+              <span className="tag bg-sun text-accent-foreground">{lang === "ar" ? "دورة نشطة" : "Active course"}</span>
+              <p className="mt-5 text-sm font-extrabold text-aqua">{t(demoCourse.level, lang)}</p>
+              <h2 className="mt-2 text-3xl font-black leading-tight sm:text-4xl">English for Kids<br/><span className="text-ink-muted">{lang === "ar" ? "اللغة الإنجليزية للأطفال" : "English for children"}</span></h2>
+              <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm font-bold text-ink-muted"><span className="flex items-center gap-2"><Clock3 className="text-aqua" size={18} />60 {lang === "ar" ? "دقيقة" : "minutes"}</span><span className="flex items-center gap-2"><BookOpen className="text-aqua" size={18} />9 {lang === "ar" ? "دروس" : "lessons"}</span><span className="flex items-center gap-2"><Award className="text-sun" size={18} />{lang === "ar" ? "شهادة إتمام" : "Certificate"}</span></div>
+              <div className="mt-8 max-w-lg"><div className="flex justify-between text-sm font-extrabold"><span>{lang === "ar" ? "نسبة الإنجاز" : "Course progress"}</span><span>{progress}%</span></div><div className="mt-2 h-3 overflow-hidden rounded-full bg-ink-line"><div className="h-full rounded-full bg-sun transition-all" style={{ width: `${progress}%` }} /></div></div>
+              <Button className="mt-7" asChild><Link to="/learning/english-kids"><Play size={17} />{lang === "ar" ? "مواصلة التعلم" : "Continue learning"}</Link></Button>
+            </div>
+            <GraduationCap className="absolute -bottom-8 end-4 text-ink-line" size={190} strokeWidth={1} aria-hidden="true" />
+          </section>
+
+          <section>
+            <div className="flex items-end justify-between gap-4"><div><span className="eyebrow">{lang === "ar" ? "مساري الحالي" : "My current track"}</span><h2 className="mt-2 text-2xl font-black">{lang === "ar" ? "منهاج الدورة" : "Course curriculum"}</h2></div><b className="text-sm text-aqua">{completed}/{lessons.length} {lang === "ar" ? "وحدات" : "units"}</b></div>
+            <div className="mt-5 space-y-3">
+              {lessons.map((lesson, index) => (
+                <article className={`card flex flex-col gap-4 p-5 transition-all sm:flex-row sm:items-center ${!done[index] && index === completed ? "border-sun bg-sun-soft" : ""}`} key={lesson.index}>
+                  <span className={`grid size-12 shrink-0 place-items-center rounded-md font-display text-lg font-black ${done[index] ? "bg-aqua-soft text-aqua" : index === completed ? "bg-sun text-accent-foreground" : "bg-muted text-muted-foreground"}`}>{String(index + 1).padStart(2, "0")}</span>
+                  <div className="min-w-0 flex-1"><h3 className="font-black">{t(lesson.title, lang)}</h3><p className="mt-1 text-sm text-muted-foreground">{t(lesson.meta, lang)} · {lesson.minutes} {lang === "ar" ? "دقيقة" : "min"}</p></div>
+                  {done[index] ? <span className="tag bg-aqua-soft text-aqua"><CheckCircle2 size={15} />{lang === "ar" ? "مكتمل" : "Complete"}</span> : index === completed ? <Button size="sm" onClick={() => setDone((items) => items.map((value, itemIndex) => itemIndex === index ? true : value))}><Play size={15} />{lang === "ar" ? "ابدأ الوحدة" : "Start unit"}</Button> : <span className="tag bg-muted text-muted-foreground">{lang === "ar" ? "يفتح بالتتابع" : "Unlocks next"}</span>}
+                </article>
+              ))}
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section className="border-y bg-card py-14">
+        <div className="page-wrap">
+          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end"><div><span className="eyebrow"><BookOpen size={16} />{lang === "ar" ? "مكتبة الأكاديمية" : "Academy library"}</span><h2 className="section-title mt-3">{lang === "ar" ? "استكشف الدورات" : "Explore courses"}</h2></div><label className="relative block w-full lg:max-w-sm"><Search className="absolute start-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} /><span className="sr-only">{lang === "ar" ? "ابحث عن دورة" : "Search courses"}</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={lang === "ar" ? "ابحث باسم الدورة أو المهارة" : "Search by course or skill"} className="h-12 w-full rounded-md border bg-background ps-11 pe-4 outline-none focus:ring-2 focus:ring-ring" /></label></div>
+          <div className="mt-6 flex flex-wrap gap-2">{categories.map((item) => <Button key={item.id} size="sm" variant={category === item.id ? "default" : "outline"} onClick={() => setCategory(item.id)}>{lang === "ar" ? item.ar : item.en}</Button>)}</div>
+          <div className="mt-7 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {filteredCourses.map((course, index) => <article className="card overflow-hidden lift" key={course.id}><div className={`h-2 ${index % 3 === 0 ? "bg-primary" : index % 3 === 1 ? "bg-aqua" : "bg-sun"}`} /><div className="p-6"><div className="flex items-start justify-between gap-3"><span className="tag bg-muted text-muted-foreground">{t(course.level, lang)}</span><span className="flex items-center gap-1 text-sm font-black"><Star className="fill-sun text-sun" size={16} />{course.rating}</span></div><h3 className="mt-5 text-xl font-black">{course.title}</h3><p className="mt-2 min-h-12 text-sm leading-6 text-muted-foreground">{t(course.subtitle, lang)}</p><div className="mt-5 flex gap-5 border-y py-4 text-xs font-extrabold text-muted-foreground"><span>{course.lessons} {lang === "ar" ? "دروس" : "lessons"}</span><span>{course.hours} {lang === "ar" ? "ساعة" : "hour"}</span><span>{lang === "ar" ? "أنشطة وتقييم" : "Activities & quiz"}</span></div><Button className="mt-5 w-full" variant={course.progress ? "default" : "outline"} asChild><Link to="/learning/english-kids">{course.progress ? (lang === "ar" ? "متابعة الدورة" : "Continue course") : (lang === "ar" ? "استكشف الدورة" : "Explore course")}</Link></Button></div></article>)}
+          </div>
+          {!filteredCourses.length && <p className="mt-8 rounded-md border border-dashed p-8 text-center text-muted-foreground">{lang === "ar" ? "لا توجد دورات مطابقة لبحثك." : "No courses match your search."}</p>}
+        </div>
+      </section>
+
+      <section className="page-wrap py-12"><div className="flex flex-col items-start justify-between gap-5 rounded-lg bg-sun-soft p-6 sm:flex-row sm:items-center"><div className="flex gap-4"><span className="grid size-12 shrink-0 place-items-center rounded-md bg-sun text-accent-foreground"><Award /></span><div><h2 className="font-black">{lang === "ar" ? "شهادة إتمام المسار" : "Course completion certificate"}</h2><p className="mt-1 text-sm text-muted-foreground">{lang === "ar" ? "تُتاح تلقائياً بعد إكمال الوحدات والتقييم الختامي." : "Available automatically after all units and the final assessment."}</p></div></div><Button variant="outline" disabled={progress < 100}>{progress < 100 ? (lang === "ar" ? "أكمل المسار أولاً" : "Complete the track first") : (lang === "ar" ? "عرض الشهادة" : "View certificate")}</Button></div></section>
+    </main>
   );
 }
 
