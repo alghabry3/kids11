@@ -16,6 +16,8 @@ export const Route = createFileRoute("/learning")({
         content:
           "مسار تعليمي تفاعلي يجمع الدروس والأنشطة وتتبع التقدم في مكان واحد، مناسب للأطفال وأولياء الأمور.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: () => <LearningPage />,
